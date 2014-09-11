@@ -1,0 +1,43 @@
+#
+# $Id: fit.dem,v 1.8 2009/10/31 05:24:18 sfeam Exp $
+#
+
+print "Some examples how data fitting using nonlinear least squares fit"
+print "can be done."
+print ""
+pause -1 "first plotting the pure data set  (-> return)"
+
+reset
+set title 'data for first fit demo'
+set xlabel "Temperature T  [deg Cels.]"
+set ylabel "Density [g/cm3]"
+set key below
+plot 'C:\Users\Jaken\Desktop\data.dat'
+
+print "now fitting a straight line to the data :-)"
+print "only as a demo without physical meaning"
+load 'line.fnc'
+y0 = 0.0
+m = 0.0
+print "fit function and initial parameters are as follows:"
+print GPFUN_l
+show variables y0
+show variables m
+#show variables
+pause -1 "add fit function with all parameters set to zero  (-> return)"
+set title 'all fit params set to 0'
+plot [*:*][-.1:1.2] 'C:\Users\Jaken\Desktop\data.dat', l(x)
+print "fit command will be: fit l(x) 'C:\Users\Jaken\Desktop\data.dat' via y0, m"
+pause -1 "now start fitting...  (-> return)"
+fit l(x) 'C:\Users\Jaken\Desktop\data.dat' via y0, m
+pause -1 "now look at the result (-> return)"
+set title 'unweighted fit'
+plot 'C:\Users\Jaken\Desktop\data.dat', l(x)
+
+pause -1 "see the influence of weights for single data points ( -> return)"
+fit l(x) 'C:\Users\Jaken\Desktop\data.dat' using 1:2:3 via y0, m
+pause -1 "now look at the result (-> return)"
+set title 'fit weighted towards low temperatures'
+plot 'C:\Users\Jaken\Desktop\data.dat', l(x)
+
+
